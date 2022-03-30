@@ -1,0 +1,9 @@
+-----------
+plans =>
+
+
+1 - clear the garbage that comes by default
+2 - set the architecture of the folders
+3 - build the home/main page
+4 - build the modal
+5 - research about that check on text/typing
