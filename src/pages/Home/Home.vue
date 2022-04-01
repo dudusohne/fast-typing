@@ -6,19 +6,37 @@
         <input type="textarea" class="input" />
 
         <MiddleText />
-        <ModalText :is-open="true" />
+        <ModalText :is-open="modalOpen" />
     </div>
 </template>
 
 <script setup lang="ts">
-import { onMounted } from 'vue'
+import { onMounted, watch, ref } from 'vue'
 
 import MiddleText from '../../components/MiddleText/MiddleText.vue';
 import ModalText from '../../components/ModalText/ModalText.vue';
 
+const modalOpen = ref<boolean>(false)
+
 onMounted(() => {
     console.log('mounted');
 })
+
+//watch
+//capturar evento de click
+//fechar modal
+//startar cronometro
+watch(
+    () => emit('click'),
+    () => {
+        modalOpen.value = false;
+        // startTimer();
+    }
+)
+
+const emit = defineEmits<{
+    (_event: 'click'): void
+}>()
 
 </script>
 
@@ -46,8 +64,8 @@ onMounted(() => {
 
         border: none;
         border-radius: 0.5rem;
-        background-color: rgba(226, 188, 107, 0.158);
-        /* background: none; */
+        /* background-color: rgba(226, 188, 107, 0.158); */
+        background: none;
         color: rgb(255, 255, 255);
         font-family: "Inter", sans-serif;
         font-size: 25px;

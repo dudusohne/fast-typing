@@ -2,8 +2,8 @@
     <div id="myModal" class="modal" v-show="props.isOpen">
         <!-- Modal content -->
         <div class="modal-content">
-            <span class="close">&times;</span>
-            <p>Some text in the Modal..</p>
+            <span class="close">▷</span>
+            <p>click or press any key to start</p>
         </div>
     </div>
 </template>
@@ -23,7 +23,7 @@ const props = defineProps<ModalProps>()
 .modal {
     display: block;
     position: fixed;
-    z-index: 1;
+    z-index: 2;
     left: 0;
     top: 0;
     width: 100%;
@@ -33,26 +33,35 @@ const props = defineProps<ModalProps>()
     background-color: rgba(0, 0, 0, 0.4);
 }
 
-/* Modal Content/Box */
 .modal-content {
-    background-color: #fefefe;
+    display: flex;
     margin: 15% auto;
     padding: 20px;
-    border: 1px solid #888;
     width: 80%;
+    justify-content: center;
+    align-items: center;
+
+    p { 
+        font-family: "Fira Code", monospace;
+        font-size: 1rem;
+        color: #ffffff;
+
+        margin-left: 0.5rem;
+    }
 }
 
 .close {
-    color: #aaa;
+    color: #67E480;
     float: right;
-    font-size: 28px;
+    font-size: 23px;
     font-weight: bold;
 }
 
 .close:hover,
 .close:focus {
-    color: black;
+    color: rgb(24, 70, 13);
     text-decoration: none;
+    font-size: 28px;
     cursor: pointer;
 }
 </style>
