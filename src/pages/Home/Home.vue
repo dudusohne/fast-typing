@@ -1,7 +1,7 @@
 <template>
     <div class="home">
         <div class="header">
-            <span>00:00</span>
+            <span id="time"></span>
         </div>
         <input type="textarea" class="input" />
 
@@ -11,7 +11,7 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, watch, ref } from 'vue'
+import { onMounted, ref } from 'vue'
 
 import MiddleText from '../../components/MiddleText/MiddleText.vue';
 import ModalText from '../../components/ModalText/ModalText.vue';
@@ -19,25 +19,31 @@ import ModalText from '../../components/ModalText/ModalText.vue';
 const modalOpen = ref<boolean>(false)
 
 onMounted(() => {
-    console.log('mounted');
+    let duration = 60 * 2;
+    let display = document.querySelector('#time');
+
+    startTimer(duration, display);
 })
 
-//watch
-//capturar evento de click
-//fechar modal
-//startar cronometro
-watch(
-    () => emit('click'),
-    () => {
-        modalOpen.value = false;
-        // startTimer();
-    }
-)
 
-const emit = defineEmits<{
-    (_event: 'click'): void
-}>()
+function startTimer(duration: number, display: any) {
+    let timer: number = duration, minutes, seconds;
 
+    setInterval(function () {
+        minutes = parseInt(timer / 60, 10)
+        seconds = parseInt(timer % 60, 10);
+
+        minutes = minutes < 10 ? "0" + minutes : minutes;
+        seconds = seconds < 10 ? "0" + seconds : seconds;
+
+        display.textContent = minutes + ":" + seconds;
+
+        if (--timer < 0) {
+            timer = duration;
+        }
+
+    }, 1000);
+}
 </script>
 
 <style scoped lang="scss">
@@ -45,6 +51,7 @@ const emit = defineEmits<{
     display: flex;
     flex-direction: column;
     align-items: center;
+    overflow-wrap: break-word;
 
     .header {
         margin-top: 5rem;
@@ -71,7 +78,6 @@ const emit = defineEmits<{
         font-size: 25px;
 
         z-index: 5;
-        overflow-x: auto;
 
         &:focus {
             outline: none;
