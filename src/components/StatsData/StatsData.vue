@@ -20,7 +20,8 @@ const props = defineProps<Props>()
     align-items: flex-start;
 
     .text {
-        font-family: "Fira Code", monospace;
+        font-family: "DM Mono", sans-serif;
+        font-weight: 900;
         font-size: 37px;
         color: #ffffff;
     }

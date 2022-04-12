@@ -31,7 +31,7 @@ import StatsData from '../../components/StatsData/StatsData.vue';
         font-family: "Fira Code", monospace;
         font-size: 39px;
         color: #e7de79;
-        margin-bottom: 7rem;
+        margin-bottom: 5rem;
     }
 
     .container {
