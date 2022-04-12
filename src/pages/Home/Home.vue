@@ -1,30 +1,37 @@
 <template>
     <div class="home">
         <div class="header">
-            <span id="time"></span>
+                <span id="time" @click="log()"></span>
         </div>
         <input type="textarea" class="input" />
 
         <MiddleText />
         <ModalText :is-open="modalOpen" />
+        <ModalTimer :is-open="false" />
     </div>
 </template>
 
 <script setup lang="ts">
-import { onMounted, ref } from 'vue'
+import { onMounted, ref, watch } from 'vue'
 
 import MiddleText from '../../components/MiddleText/MiddleText.vue';
 import ModalText from '../../components/ModalText/ModalText.vue';
+import ModalTimer from '../../components/ModalTimer/ModalTimer.vue';
 
 const modalOpen = ref<boolean>(false)
 
 onMounted(() => {
-    let duration = 60 * 2;
+    let duration = 60 * 1;
     let display = document.querySelector('#time');
 
     startTimer(duration, display);
 })
 
+//watch to get any keypress and show letter by letter from the setted text
+
+function openModalTimer() {
+    console.log('open timer modal')
+}
 
 function startTimer(duration: number, display: any) {
     let timer: number = duration, minutes, seconds;
