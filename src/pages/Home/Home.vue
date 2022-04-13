@@ -1,21 +1,20 @@
 <template>
     <div class="home">
         <div class="header">
-            <span id="time" @click=""></span>
+            <span id="time"></span>
         </div>
-
 
         <MiddleText>
             <template #text>
                 <div>
-
                     <span id="text-upper" style="color: red;"></span>
                     <p class="back-text">{{ text }}</p>
                 </div>
             </template>
         </MiddleText>
         <ModalText :is-open="modalOpen" />
-        <ModalTimer :is-open="false" />  </div>
+        <ModalTimer :is-open="false" />
+    </div>
 </template>
 
 <script setup lang="ts">
@@ -35,20 +34,22 @@ const props = withDefaults(defineProps<HomeProps>(), {
 
 const modalOpen = ref<boolean>(false)
 
-const text = 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Error temporibus accusamus saepe amet quos cumque optio eos quibusdam velit dicta, maxime vitae repellat repudiandae est et, eius perspiciatis quo earum.'
+const text = 'lorem ipsum dolor sit amet consectetur adipisicing elit. Error temporibus accusamus saepe amet quos cumque optio eos quibusdam velit dicta, maxime vitae repellat repudiandae est et, eius perspiciatis quo earum.'
 
 onMounted(() => {
+    // const keyBoard: any = document.querySelector('.keyboard')
     let duration = 60 * 1;
     let display = document.querySelector('#time');
 
     let textPrint = document.querySelector('#text-upper')
 
+
+
     let keyCount: number = -1;
 
     startTimer(duration, display);
 
-    window.addEventListener('keyup', function (key) {
-        // console.log('key: ', ev);
+    window.addEventListener('keypress', function (key: any) {
         keyCount++
         handleKeyEvent(key, textPrint, keyCount);
     });
@@ -57,9 +58,14 @@ onMounted(() => {
 function handleKeyEvent(keypressed: any, textPrint: any, keyCount: number) {
     console.log('tecla: ', keypressed.key);
     console.log('texto: ', text[keyCount]);
-    textPrint.textContent = textPrint.textContent + text[keyCount];
+    let redTextPrint = document.getElementById('text-upper')
 
     if (keypressed.key.toLowerCase() === text[keyCount]) {
+        document.getElementById('text-upper').style.color = 'white';
+        textPrint.textContent = textPrint.textContent + text[keyCount];
+    } else {
+        document.getElementById('text-upper').style.color = 'red';
+        textPrint.textContent = textPrint.textContent + text[keyCount];
     }
 
 }
