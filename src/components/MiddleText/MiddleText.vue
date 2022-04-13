@@ -1,6 +1,7 @@
 <template>
     <div class="container">
-        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Error temporibus accusamus saepe amet quos cumque optio eos quibusdam velit dicta, maxime vitae repellat repudiandae est et, eius perspiciatis quo earum.</p>
+        <slot name="text"></slot>
+       
     </div>
 </template>
 
@@ -18,7 +19,7 @@
     p {
         font-family: "Inter", sans-serif;
         font-size: 25px;
-        color: #41414d;
+        color: #0d0d9e;
     }
 }
 </style>

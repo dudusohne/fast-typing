@@ -1,37 +1,75 @@
 <template>
     <div class="home">
         <div class="header">
-                <span id="time" @click="log()"></span>
+            <span id="time" @click=""></span>
         </div>
-        <input type="textarea" class="input" />
 
-        <MiddleText />
+
+        <MiddleText>
+            <template #text>
+                <div>
+
+                    <span id="text-upper" style="color: red;"></span>
+                    <p class="back-text">{{ text }}</p>
+                </div>
+            </template>
+        </MiddleText>
         <ModalText :is-open="modalOpen" />
-        <ModalTimer :is-open="false" />
-    </div>
+        <ModalTimer :is-open="false" />  </div>
 </template>
 
 <script setup lang="ts">
-import { onMounted, ref, watch } from 'vue'
+import { onMounted, ref, watch, withDefaults } from 'vue'
 
 import MiddleText from '../../components/MiddleText/MiddleText.vue';
 import ModalText from '../../components/ModalText/ModalText.vue';
 import ModalTimer from '../../components/ModalTimer/ModalTimer.vue';
 
+interface HomeProps {
+    letterCount: number;
+}
+
+const props = withDefaults(defineProps<HomeProps>(), {
+    letterCount: 0,
+})
+
 const modalOpen = ref<boolean>(false)
+
+const text = 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Error temporibus accusamus saepe amet quos cumque optio eos quibusdam velit dicta, maxime vitae repellat repudiandae est et, eius perspiciatis quo earum.'
 
 onMounted(() => {
     let duration = 60 * 1;
     let display = document.querySelector('#time');
 
+    let textPrint = document.querySelector('#text-upper')
+
+    let keyCount: number = -1;
+
     startTimer(duration, display);
+
+    window.addEventListener('keyup', function (key) {
+        // console.log('key: ', ev);
+        keyCount++
+        handleKeyEvent(key, textPrint, keyCount);
+    });
 })
+
+function handleKeyEvent(keypressed: any, textPrint: any, keyCount: number) {
+    console.log('tecla: ', keypressed.key);
+    console.log('texto: ', text[keyCount]);
+    textPrint.textContent = textPrint.textContent + text[keyCount];
+
+    if (keypressed.key.toLowerCase() === text[keyCount]) {
+    }
+
+}
 
 //watch to get any keypress and show letter by letter from the setted text
 
 function openModalTimer() {
     console.log('open timer modal')
 }
+
 
 function startTimer(duration: number, display: any) {
     let timer: number = duration, minutes, seconds;
