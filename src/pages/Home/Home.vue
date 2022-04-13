@@ -1,19 +1,19 @@
 <template>
     <div class="home">
         <div class="header">
-            <span id="time"></span>
+            <span id="time" @click="openModalTimer"></span>
         </div>
 
         <MiddleText>
             <template #text>
-                <div>
-                    <span id="text-upper" style="color: red;"></span>
+                <div class="middle-text">
+                    <p id="text-upper"></p>
                     <p class="back-text">{{ text }}</p>
                 </div>
             </template>
         </MiddleText>
-        <ModalText :is-open="modalOpen" />
-        <ModalTimer :is-open="false" />
+        <ModalText :is-open="modalStart" />
+        <ModalTimer :is-open="modalTimer" />
     </div>
 </template>
 
@@ -32,11 +32,13 @@ const props = withDefaults(defineProps<HomeProps>(), {
     letterCount: 0,
 })
 
-const modalOpen = ref<boolean>(false)
+const modalStart = ref<boolean>(false)
+const modalTimer = ref<boolean>(false)
 
-const text = 'lorem ipsum dolor sit amet consectetur adipisicing elit. Error temporibus accusamus saepe amet quos cumque optio eos quibusdam velit dicta, maxime vitae repellat repudiandae est et, eius perspiciatis quo earum.'
+const text = 'lorem ipsum dolor sit amet consectetur adipisicing elit error temporibus accusamus saepe amet quos cumque optio eos quibusdam velit dicta maxime vitae repellat repudiandae est et eius perspiciatis quo earum'
 
 onMounted(() => {
+    //TODO: check if has a way to use this
     // const keyBoard: any = document.querySelector('.keyboard')
     let duration = 60 * 1;
     let display = document.querySelector('#time');
@@ -56,23 +58,24 @@ onMounted(() => {
 })
 
 function handleKeyEvent(keypressed: any, textPrint: any, keyCount: number) {
-    console.log('tecla: ', keypressed.key);
-    console.log('texto: ', text[keyCount]);
+    // console.log('tecla: ', keypressed.key);
+    // console.log('texto: ', text[keyCount]);
     let redTextPrint = document.getElementById('text-upper')
 
     if (keypressed.key.toLowerCase() === text[keyCount]) {
+        //@ts-ignore
         document.getElementById('text-upper').style.color = 'white';
         textPrint.textContent = textPrint.textContent + text[keyCount];
     } else {
+        //@ts-ignore
         document.getElementById('text-upper').style.color = 'red';
         textPrint.textContent = textPrint.textContent + text[keyCount];
     }
 
 }
 
-//watch to get any keypress and show letter by letter from the setted text
-
 function openModalTimer() {
+    modalTimer.value = true
     console.log('open timer modal')
 }
 
@@ -104,6 +107,24 @@ function startTimer(duration: number, display: any) {
     align-items: center;
     overflow-wrap: break-word;
 
+    .middle-text {
+   
+
+        #text-upper {
+            font-family: "DM Mono", sans-serif;
+            font-weight: 900;
+            font-size: 28px;
+        }
+
+        .back-text {
+            font-family: "DM Mono", sans-serif;
+            font-weight: 900;
+            font-size: 28px;
+            color: rgba(51, 51, 51, 0.719);
+            margin-top: -4.05rem;
+        }
+    }
+
     .header {
         margin-top: 5rem;
 
@@ -111,27 +132,6 @@ function startTimer(duration: number, display: any) {
             font-family: "Fira Code", monospace;
             font-size: 2rem;
             color: #e7de79;
-        }
-    }
-
-    input {
-        width: 50rem;
-        height: 9.6rem;
-        margin-top: 2rem;
-        padding: 0 1rem;
-
-        border: none;
-        border-radius: 0.5rem;
-        /* background-color: rgba(226, 188, 107, 0.158); */
-        background: none;
-        color: rgb(255, 255, 255);
-        font-family: "Inter", sans-serif;
-        font-size: 25px;
-
-        z-index: 5;
-
-        &:focus {
-            outline: none;
         }
     }
 }
