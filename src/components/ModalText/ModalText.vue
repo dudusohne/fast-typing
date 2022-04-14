@@ -2,8 +2,8 @@
     <div id="myModal" class="modal" v-show="props.isOpen">
         <!-- Modal content -->
         <div class="modal-content">
-            <span class="close">▷</span>
-            <p>click or press any key to start</p>
+            <span style="color: #e7de79; font-size: 22px;">▷</span>
+            <p style="font-size: 28px;">press <b style="color: #e7de79;">ENTER</b>  to start</p>
         </div>
     </div>
 </template>
@@ -48,20 +48,5 @@ const props = defineProps<ModalProps>()
 
         margin-left: 0.5rem;
     }
-}
-
-.close {
-    color: #67E480;
-    float: right;
-    font-size: 23px;
-    font-weight: bold;
-}
-
-.close:hover,
-.close:focus {
-    color: rgb(24, 70, 13);
-    text-decoration: none;
-    font-size: 28px;
-    cursor: pointer;
 }
 </style>

@@ -1,5 +1,7 @@
 <template>
     <div id="myModal" class="modal-timer" v-show="props.isOpen">
+    <!-- modal header -->
+    <span>Define um novo tempo abaixo ou continue:</span>
         <!-- Modal content -->
         <div class="modal-content">
             <input v-model="props.minutes" type="number"/>

@@ -12,26 +12,36 @@
                     <p id="text-upper"></p>
                     <p class="back-text">{{ text }}</p>
                 </div>
+                <i
+                    class="fa fa-arrow-circle-left"
+                    style="color: #e7de79; font-size: 28px; margin-top: 20rem;"
+                    aria-hidden="true"
+                    @click="restartAll()"
+                ></i>
             </template>
         </MiddleText>
+
         <ModalText :is-open="modalStart" />
 
         <!-- modal-timer -->
         <div id="myModal" class="modal-timer" v-show="modalTimer">
             <!-- Modal content -->
             <div class="modal-content">
-                <input v-model="minutes" maxlength="2" type="number" class="timer-input" />
-                <p>:</p>
-                <input
-                    v-model="seconds"
-                    maxlength="2"
-                    type="number"
-                    class="timer-input"
-                    style="margin-left: 8px"
-                />
-                <div style="display: flex;flex-direction: column;">
-                    <button style="color: green" @click="sendInputs(minutes, seconds)">V</button>
-                    <button style="color: red" @click="sendInputs(minutes, seconds)">X</button>
+                <span class="modal-content-header">Defina um novo tempo abaixo</span>
+                <div class="form-timer">
+                    <input v-model="minutes" maxlength="2" type="number" class="timer-input" />
+                    <p>:</p>
+                    <input
+                        v-model="seconds"
+                        maxlength="2"
+                        type="number"
+                        class="timer-input"
+                        style="margin-left: 8px"
+                    />
+                    <div style="display: flex;flex-direction: column;">
+                        <button style="color: green" @click="sendInputs(minutes, seconds)">V</button>
+                        <button style="color: red" @click="sendInputs(minutes, seconds)">X</button>
+                    </div>
                 </div>
             </div>
         </div>
@@ -43,6 +53,9 @@ import { HtmlHTMLAttributes, onBeforeMount, onMounted, ref, watch, withDefaults 
 
 import MiddleText from '../../components/MiddleText/MiddleText.vue';
 import ModalText from '../../components/ModalText/ModalText.vue';
+import { useRouter } from 'vue-router';
+
+const router = useRouter()
 
 const modalStart = ref<boolean>(false)
 const modalTimer = ref<boolean>(false)
@@ -67,6 +80,10 @@ onBeforeMount(() => {
     });
 })
 
+function restartAll() {
+    window.location.reload();
+}
+
 function handleKeyEvent(keypressed: any, textPrint: HTMLBaseElement, keyCount: number) {
     // let redTextPrint = document.getElementById('text-upper')
 
@@ -79,7 +96,6 @@ function handleKeyEvent(keypressed: any, textPrint: HTMLBaseElement, keyCount: n
         document.getElementById('text-upper').style.color = 'red';
         textPrint.textContent = textPrint.textContent + text[keyCount];
     }
-
 }
 
 function openModalTimer() {
@@ -94,11 +110,9 @@ function sendInputs(minutes: any, seconds: any) {
     } else {
         duration = seconds
     }
-
     modalTimer.value = false;
 
     let textPrint = document.querySelector('#text-upper')
-
     let keyCount: number = -1;
 
     window.addEventListener('keypress', function (key: any) {
@@ -128,6 +142,8 @@ function startTimer(duration: number, display: any) {
 
         if (--timer < 0) {
             timer = duration;
+            clearInterval(duration);
+            router.push('/stats')
         }
 
     }, 1000);
@@ -140,20 +156,28 @@ function startTimer(duration: number, display: any) {
     flex-direction: column;
     align-items: center;
     overflow-wrap: break-word;
+    height: 80vh;
 
     .middle-text {
         #text-upper {
+            position: fixed;
+            width: 57rem;
+            top: 15rem;
+            right: 23rem;
             font-family: "DM Mono", sans-serif;
             font-weight: 900;
             font-size: 28px;
         }
 
         .back-text {
+            position: fixed;
+            width: 57rem;
+            top: 15rem;
+            right: 23rem;
             font-family: "DM Mono", sans-serif;
             font-weight: 900;
             font-size: 28px;
             color: rgba(51, 51, 51, 0.719);
-            margin-top: -4.05rem;
         }
     }
 
@@ -181,7 +205,7 @@ function startTimer(duration: number, display: any) {
 
         .modal-content {
             display: flex;
-            flex-direction: row;
+            flex-direction: column;
             margin: 15% auto;
             padding: 20px;
             width: fit-content;
@@ -190,43 +214,56 @@ function startTimer(duration: number, display: any) {
             background-color: #191622;
             border-radius: 12px;
 
-            p {
-                font-family: "Fira Code", monospace;
-                font-size: 1.5rem;
-                color: #ffffff;
-
-                margin-left: 0.5rem;
-            }
-
-            button {
-                background: none;
-                border: none;
-                font-size: 24px;
-                font-weight: bold;
-                margin-left: 1rem;
-
-                &:hover {
-                    font-size: 26px;
-                }
-            }
-
-            .timer-input {
-                height: 4rem;
-                width: 4rem;
-                text-align: center;
+            .modal-content-header {
+                font-size: 1rem;
+                color: #e7de79;
                 justify-content: center;
-                background-color: #191622;
-                color: rgb(216, 216, 216);
-                border: 3px solid rgb(216, 216, 216);
-                border-radius: 2px;
-                font-size: 38px;
-                font-weight: bold;
-                font-family: "Fira Code", monospace;
+                align-items: center;
+            }
 
-                &:focus {
-                    color: rgb(235, 210, 69);
-                    border-color: rgb(235, 210, 69);
-                    opacity: 0.8;
+            .form-timer {
+                display: flex;
+                flex-direction: row;
+                margin-top: 1.4rem;
+                
+                p {
+                    font-family: "Fira Code", monospace;
+                    font-size: 1.5rem;
+                    color: #ffffff;
+
+                    margin-left: 0.5rem;
+                }
+
+                button {
+                    background: none;
+                    border: none;
+                    font-size: 24px;
+                    font-weight: bold;
+                    margin-left: 1rem;
+
+                    &:hover {
+                        font-size: 26px;
+                    }
+                }
+
+                .timer-input {
+                    height: 4rem;
+                    width: 4rem;
+                    text-align: center;
+                    justify-content: center;
+                    background-color: #191622;
+                    color: rgb(216, 216, 216);
+                    border: 3px solid rgb(216, 216, 216);
+                    border-radius: 2px;
+                    font-size: 38px;
+                    font-weight: bold;
+                    font-family: "Fira Code", monospace;
+
+                    &:focus {
+                        color: rgb(235, 210, 69);
+                        border-color: rgb(235, 210, 69);
+                        opacity: 0.8;
+                    }
                 }
             }
 
