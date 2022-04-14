@@ -1,8 +1,11 @@
 <template>
     <div class="home">
+        <!-- header -->
         <div class="header">
             <span id="time" @click="openModalTimer"></span>
         </div>
+
+        <!-- middle text -->
         <MiddleText>
             <template #text>
                 <div class="middle-text">
@@ -12,16 +15,23 @@
             </template>
         </MiddleText>
         <ModalText :is-open="modalStart" />
-        <!-- <ModalTimer :is-open="modalTimer" /> -->
+
+        <!-- modal-timer -->
         <div id="myModal" class="modal-timer" v-show="modalTimer">
             <!-- Modal content -->
             <div class="modal-content">
-                <input v-model="minutes" type="number" />
+                <input v-model="minutes" maxlength="2" type="number" class="timer-input" />
                 <p>:</p>
-                <input v-model="seconds" type="number" style="margin-left: 8px" />
+                <input
+                    v-model="seconds"
+                    maxlength="2"
+                    type="number"
+                    class="timer-input"
+                    style="margin-left: 8px"
+                />
                 <div style="display: flex;flex-direction: column;">
                     <button style="color: green" @click="sendInputs(minutes, seconds)">V</button>
-                    <button style="color: red" @click="!modalTimer">X</button>
+                    <button style="color: red" @click="sendInputs(minutes, seconds)">X</button>
                 </div>
             </div>
         </div>
@@ -29,48 +39,36 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, ref, watch, withDefaults } from 'vue'
+import { HtmlHTMLAttributes, onBeforeMount, onMounted, ref, watch, withDefaults } from 'vue'
 
 import MiddleText from '../../components/MiddleText/MiddleText.vue';
 import ModalText from '../../components/ModalText/ModalText.vue';
-import ModalTimer from '../../components/ModalTimer/ModalTimer.vue';
 
 const modalStart = ref<boolean>(false)
 const modalTimer = ref<boolean>(false)
 
-const minutes = ref(0);
-const seconds = ref(60);
+const minutes = ref<number>(0);
+const seconds = ref<number>(60);
 
 const text = 'lorem ipsum dolor sit amet consectetur adipisicing elit error temporibus accusamus saepe amet quos cumque optio eos quibusdam velit dicta maxime vitae repellat repudiandae est et eius perspiciatis quo earum'
 
-onMounted(() => {
+onBeforeMount(() => {
     //TODO: check if has a way to use this
     // const keyBoard: any = document.querySelector('.keyboard')
-
-    let display = document.querySelector('#time');
-
-    let textPrint = document.querySelector('#text-upper')
-
-    let keyCount: number = -1;
+    // let display = document.querySelector('#time');
 
     modalStart.value = true;
+
     window.addEventListener('keydown', (e: any) => {
-        modalStart.value = false;
-        modalTimer.value = true;
+        if (e.key == 'Enter') {
+            modalStart.value = false;
+            modalTimer.value = true;
+        }
     });
-
-    // startTimer(duration, display);
-
-    // window.addEventListener('keypress', function (key: any) {
-    //     keyCount++
-    //     handleKeyEvent(key, textPrint, keyCount);
-    // });
 })
 
-function handleKeyEvent(keypressed: any, textPrint: any, keyCount: number) {
-    // console.log('tecla: ', keypressed.key);
-    // console.log('texto: ', text[keyCount]);
-    let redTextPrint = document.getElementById('text-upper')
+function handleKeyEvent(keypressed: any, textPrint: HTMLBaseElement, keyCount: number) {
+    // let redTextPrint = document.getElementById('text-upper')
 
     if (keypressed.key.toLowerCase() === text[keyCount]) {
         //@ts-ignore
@@ -86,25 +84,32 @@ function handleKeyEvent(keypressed: any, textPrint: any, keyCount: number) {
 
 function openModalTimer() {
     modalTimer.value = true
-    console.log('open timer modal')
 }
 
 function sendInputs(minutes: any, seconds: any) {
-    console.log('send')
-    let duration = seconds.value * minutes.value;
+    let duration = 0;
+
+    if (minutes > 1) {
+        duration = seconds * minutes;
+    } else {
+        duration = seconds
+    }
+
     modalTimer.value = false;
-    let timer = setInterval(() => {
+
+    let textPrint = document.querySelector('#text-upper')
+
+    let keyCount: number = -1;
+
+    window.addEventListener('keypress', function (key: any) {
+        keyCount++
         //@ts-ignore
-        display.innerHTML = `${duration}`;
-        duration--;
-        if (duration < 0) {
-            clearInterval(timer);
-            modalTimer.value = false;
-            modalStart.value = true;
-            //@ts-ignore
-            display.innerHTML = '0';
-        }
-    }, 1000);
+        handleKeyEvent(key, textPrint, keyCount);
+    });
+
+    let display = document.querySelector('#time');
+
+    startTimer(duration, display);
 }
 
 function startTimer(duration: number, display: any) {
@@ -137,8 +142,6 @@ function startTimer(duration: number, display: any) {
     overflow-wrap: break-word;
 
     .middle-text {
-
-
         #text-upper {
             font-family: "DM Mono", sans-serif;
             font-weight: 900;
@@ -165,65 +168,76 @@ function startTimer(duration: number, display: any) {
     }
 
     .modal-timer {
-    display: block;
-    position: fixed;
-    z-index: 4;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    overflow: hidden;
-    background-color: rgba(0, 0, 0, 0.836);
-    background-color: rgba(0, 0, 0, 0.863);
+        display: block;
+        position: fixed;
+        z-index: 4;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+        background-color: rgba(0, 0, 0, 0.836);
+        background-color: rgba(0, 0, 0, 0.863);
 
-    .modal-content {
-        display: flex;
-        flex-direction: row;
-        margin: 15% auto;
-        padding: 20px;
-        width: fit-content;
-        justify-content: center;
-        align-items: center;
-        background-color: #191622;
-
-        p {
-            font-family: "Fira Code", monospace;
-            font-size: 1.5rem;
-            color: #ffffff;
-
-            margin-left: 0.5rem;
-        }
-
-        input {
-            height: 4rem;
-            width: 4rem;
+        .modal-content {
+            display: flex;
+            flex-direction: row;
+            margin: 15% auto;
+            padding: 20px;
+            width: fit-content;
+            justify-content: center;
+            align-items: center;
             background-color: #191622;
-            border: 2px solid #fff;
+            border-radius: 12px;
+
+            p {
+                font-family: "Fira Code", monospace;
+                font-size: 1.5rem;
+                color: #ffffff;
+
+                margin-left: 0.5rem;
+            }
+
+            button {
+                background: none;
+                border: none;
+                font-size: 24px;
+                font-weight: bold;
+                margin-left: 1rem;
+
+                &:hover {
+                    font-size: 26px;
+                }
+            }
+
+            .timer-input {
+                height: 4rem;
+                width: 4rem;
+                text-align: center;
+                justify-content: center;
+                background-color: #191622;
+                color: rgb(216, 216, 216);
+                border: 3px solid rgb(216, 216, 216);
+                border-radius: 2px;
+                font-size: 38px;
+                font-weight: bold;
+                font-family: "Fira Code", monospace;
+
+                &:focus {
+                    color: rgb(235, 210, 69);
+                    border-color: rgb(235, 210, 69);
+                    opacity: 0.8;
+                }
+            }
+
+            input[type="number"]::-webkit-inner-spin-button,
+            input[type="number"]::-webkit-outer-spin-button {
+                -webkit-appearance: none;
+                -moz-appearance: none;
+                appearance: none;
+                margin: 0;
+            }
         }
-
-        button {
-            /* background: none;
-            border: none; */
-            font-size: 24px;
-            font-weight: bold;
-            margin-left: 1rem;
-        }
     }
-
-    .close {
-        color: #67e480;
-        float: right;
-        font-size: 23px;
-        font-weight: bold;
-    }
-
-    .close:hover,
-    .close:focus {
-        color: rgb(24, 70, 13);
-        text-decoration: none;
-        font-size: 28px;
-        cursor: pointer;
-    }
-}
 }
 </style>
