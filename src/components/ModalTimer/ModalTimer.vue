@@ -2,12 +2,12 @@
     <div id="myModal" class="modal-timer" v-show="props.isOpen">
         <!-- Modal content -->
         <div class="modal-content">
-            <input />
+            <input v-model="props.minutes" type="number"/>
             <p>:</p>
-            <input style="margin-left: 8px" />
+            <input v-model="props.seconds" type="number" style="margin-left: 8px" />
             <div style="display: flex;flex-direction: column;">
                 <button style="color: green">V</button>
-                <button style="color: red" @click="!props.isOpen">X</button>
+                <button style="color: red" :click="props.decline">X</button>
             </div>
         </div>
     </div>
@@ -18,6 +18,10 @@ import { defineProps } from 'vue'
 
 interface ModalProps {
     isOpen: boolean;
+    minutes: number;
+    seconds: number;
+    confirm: boolean;
+    decline: boolean;
 }
 
 const props = defineProps<ModalProps>()
