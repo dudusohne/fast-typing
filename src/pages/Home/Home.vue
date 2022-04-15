@@ -13,15 +13,12 @@
                     <p class="back-text">{{ text }}</p>
                 </div>
                 <div style="display: flex; justify-content: space-between;">
-                    <span v-show="!!correctLetters">Acertos: {{ correctLetters }}</span>
-                    <i class="fa fa-arrow-circle-left" style="color: #e7de79; font-size: 28px; margin-top: 20rem;"
-                        aria-hidden="true" @click="restartAll()"></i>
-                    <span v-show="!!wrongLetters">Erros: {{ wrongLetters }}</span>
+                    <ResetSVG @click="restartAll()" style="margin-top: 20rem;"/>
                 </div>
             </template>
         </MiddleText>
 
-        <ModalText :is-open="modalStart" />
+        <ModalStart :is-open="modalStart" />
 
         <!-- modal-timer -->
         <div id="myModal" class="modal-timer" v-show="modalTimer">
@@ -31,7 +28,13 @@
                 <div class="form-timer">
                     <input v-model="minutes" maxlength="2" type="number" class="timer-input" />
                     <p>:</p>
-                    <input v-model="seconds" maxlength="2" type="number" class="timer-input" style="margin-left: 8px" />
+                    <input
+                        v-model="seconds"
+                        maxlength="2"
+                        type="number"
+                        class="timer-input"
+                        style="margin-left: 8px"
+                    />
                     <div style="display: flex;flex-direction: column;">
                         <button style="color: green" @click="sendInputs(minutes, seconds)">V</button>
                         <button style="color: red" @click="sendInputs(minutes, seconds)">X</button>
@@ -39,15 +42,15 @@
                 </div>
             </div>
         </div>
-
     </div>
 </template>
 
 <script setup lang="ts">
-import { HtmlHTMLAttributes, onBeforeMount, onMounted, ref, watch, withDefaults } from 'vue'
+import { onBeforeMount, onMounted, ref } from 'vue'
 
 import MiddleText from '../../components/MiddleText/MiddleText.vue';
-import ModalText from '../../components/ModalText/ModalText.vue';
+import ModalStart from '../../components/ModalStart/ModalStart.vue';
+import ResetSVG from '../../assets/reset-svg.vue';
 import { useRouter } from 'vue-router';
 
 const router = useRouter()
@@ -63,7 +66,7 @@ const correctLetters = ref<number>(0);
 const totalLetters = ref<number>(0);
 const letters = ref();
 
-const text = 'lorem ipsum dolor sit amet consectetur adipisicing elit error temporibus accusamus saepe amet quos cumque optio eos quibusdam velit dicta maxime vitae repellat repudiandae est et eius perspiciatis quo earum'
+const text = 'lorem ipsum dolor sit amet consectetur adipisicing eli error temporibus accusamus saepe amet quos cumque opti eos quibusdam velit dicta maxime vitae repellat repudi andae est et eius perspiciatis quo earum'
 
 onBeforeMount(() => {
     modalStart.value = true;
@@ -76,8 +79,9 @@ onBeforeMount(() => {
     });
 })
 
-function restartAll() {
-    window.location.reload();
+function openModalTimer() {
+    modalTimer.value = true
+    clearInterval();
 }
 
 function handleKeyEvent(keypressed: any, textPrint: HTMLBaseElement, keyCount: number) {
@@ -92,24 +96,10 @@ function handleKeyEvent(keypressed: any, textPrint: HTMLBaseElement, keyCount: n
         textPrint.textContent = textPrint.textContent + text[keyCount];
         wrongLetters.value++;
     }
-    if (keyCount >= text.length) {
-        totalLetters.value = text.length;
-        letters.value = `${correctLetters.value}/${totalLetters.value}`;
-        router.push({
-            path: '/stats',
-            query: {
-                letters: letters.value,
-                correct: correctLetters.value,
-                wrong: wrongLetters.value,
-                total: totalLetters.value,
-                time: `${minutes.value}:${seconds.value}`	
-            }
-        })
-    }
-}
 
-function openModalTimer() {
-    modalTimer.value = true
+    if (keyCount >= text.length) {
+        sendStats()
+    }
 }
 
 function sendInputs(minutes: number, seconds: number) {
@@ -117,7 +107,7 @@ function sendInputs(minutes: number, seconds: number) {
     let duration = 0;
 
     if (minutes > 0) {
-        duration = seconds * minutes;
+        duration = (60 * minutes) + seconds;
     } else {
         duration = seconds
     }
@@ -137,7 +127,6 @@ function sendInputs(minutes: number, seconds: number) {
 }
 
 function startTimer(duration: number, display: any) {
-    console.log(duration)
     let timer: number = duration, minutes, seconds;
 
     setInterval(function () {
@@ -154,12 +143,33 @@ function startTimer(duration: number, display: any) {
         if (--timer < 0) {
             timer = duration;
             clearInterval(duration);
-            router.push('/stats')
+            sendStats()
         }
 
     }, 1000);
 }
+
+function sendStats() {
+    totalLetters.value = text.length;
+    letters.value = `${correctLetters.value}/${totalLetters.value}`;
+    router.push({
+        path: '/stats',
+        query: {
+            letters: letters.value,
+            correct: correctLetters.value,
+            wrong: wrongLetters.value,
+            total: totalLetters.value,
+            time: `${minutes.value}:${seconds.value}`
+        }
+    })
+
+}
+
+function restartAll() {
+    window.location.reload();
+}
 </script>
+
 
 <style scoped lang="scss">
 .home {
@@ -232,6 +242,7 @@ function startTimer(duration: number, display: any) {
                 color: #e7de79;
                 justify-content: center;
                 align-items: center;
+                font-family: "Fira Code", monospace;
             }
 
             .form-timer {

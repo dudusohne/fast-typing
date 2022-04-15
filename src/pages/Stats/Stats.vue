@@ -23,11 +23,6 @@ import { ref } from 'vue';
 import { useRoute } from 'vue-router';
 import StatsData from '../../components/StatsData/StatsData.vue';
 
-interface StatsProps {
-    letterError: number;
-    letterFind: number;
-}
-
 function restartAll() {
     window.location.href = '/'
 }
