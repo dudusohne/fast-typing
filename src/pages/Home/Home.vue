@@ -12,12 +12,12 @@
                     <p id="text-upper"></p>
                     <p class="back-text">{{ text }}</p>
                 </div>
-                <i
-                    class="fa fa-arrow-circle-left"
-                    style="color: #e7de79; font-size: 28px; margin-top: 20rem;"
-                    aria-hidden="true"
-                    @click="restartAll()"
-                ></i>
+                <div style="display: flex; justify-content: space-between;">
+                    <span v-show="!!correctLetters">Acertos: {{ correctLetters }}</span>
+                    <i class="fa fa-arrow-circle-left" style="color: #e7de79; font-size: 28px; margin-top: 20rem;"
+                        aria-hidden="true" @click="restartAll()"></i>
+                    <span v-show="!!wrongLetters">Erros: {{ wrongLetters }}</span>
+                </div>
             </template>
         </MiddleText>
 
@@ -31,13 +31,7 @@
                 <div class="form-timer">
                     <input v-model="minutes" maxlength="2" type="number" class="timer-input" />
                     <p>:</p>
-                    <input
-                        v-model="seconds"
-                        maxlength="2"
-                        type="number"
-                        class="timer-input"
-                        style="margin-left: 8px"
-                    />
+                    <input v-model="seconds" maxlength="2" type="number" class="timer-input" style="margin-left: 8px" />
                     <div style="display: flex;flex-direction: column;">
                         <button style="color: green" @click="sendInputs(minutes, seconds)">V</button>
                         <button style="color: red" @click="sendInputs(minutes, seconds)">X</button>
@@ -45,6 +39,7 @@
                 </div>
             </div>
         </div>
+
     </div>
 </template>
 
@@ -63,13 +58,14 @@ const modalTimer = ref<boolean>(false)
 const minutes = ref<number>(0);
 const seconds = ref<number>(60);
 
+const wrongLetters = ref<number>(0);
+const correctLetters = ref<number>(0);
+const totalLetters = ref<number>(0);
+const letters = ref();
+
 const text = 'lorem ipsum dolor sit amet consectetur adipisicing elit error temporibus accusamus saepe amet quos cumque optio eos quibusdam velit dicta maxime vitae repellat repudiandae est et eius perspiciatis quo earum'
 
 onBeforeMount(() => {
-    //TODO: check if has a way to use this
-    // const keyBoard: any = document.querySelector('.keyboard')
-    // let display = document.querySelector('#time');
-
     modalStart.value = true;
 
     window.addEventListener('keydown', (e: any) => {
@@ -85,16 +81,30 @@ function restartAll() {
 }
 
 function handleKeyEvent(keypressed: any, textPrint: HTMLBaseElement, keyCount: number) {
-    // let redTextPrint = document.getElementById('text-upper')
-
     if (keypressed.key.toLowerCase() === text[keyCount]) {
         //@ts-ignore
         document.getElementById('text-upper').style.color = 'white';
         textPrint.textContent = textPrint.textContent + text[keyCount];
+        correctLetters.value++;
     } else {
         //@ts-ignore
         document.getElementById('text-upper').style.color = 'red';
         textPrint.textContent = textPrint.textContent + text[keyCount];
+        wrongLetters.value++;
+    }
+    if (keyCount >= text.length) {
+        totalLetters.value = text.length;
+        letters.value = `${correctLetters.value}/${totalLetters.value}`;
+        router.push({
+            path: '/stats',
+            query: {
+                letters: letters.value,
+                correct: correctLetters.value,
+                wrong: wrongLetters.value,
+                total: totalLetters.value,
+                time: `${minutes.value}:${seconds.value}`	
+            }
+        })
     }
 }
 
@@ -102,10 +112,11 @@ function openModalTimer() {
     modalTimer.value = true
 }
 
-function sendInputs(minutes: any, seconds: any) {
+function sendInputs(minutes: number, seconds: number) {
+    console.log(minutes, seconds)
     let duration = 0;
 
-    if (minutes > 1) {
+    if (minutes > 0) {
         duration = seconds * minutes;
     } else {
         duration = seconds
@@ -122,11 +133,11 @@ function sendInputs(minutes: any, seconds: any) {
     });
 
     let display = document.querySelector('#time');
-
     startTimer(duration, display);
 }
 
 function startTimer(duration: number, display: any) {
+    console.log(duration)
     let timer: number = duration, minutes, seconds;
 
     setInterval(function () {
@@ -159,11 +170,14 @@ function startTimer(duration: number, display: any) {
     height: 80vh;
 
     .middle-text {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
         #text-upper {
             position: fixed;
             width: 57rem;
             top: 15rem;
-            right: 23rem;
             font-family: "DM Mono", sans-serif;
             font-weight: 900;
             font-size: 28px;
@@ -173,7 +187,6 @@ function startTimer(duration: number, display: any) {
             position: fixed;
             width: 57rem;
             top: 15rem;
-            right: 23rem;
             font-family: "DM Mono", sans-serif;
             font-weight: 900;
             font-size: 28px;
@@ -225,7 +238,7 @@ function startTimer(duration: number, display: any) {
                 display: flex;
                 flex-direction: row;
                 margin-top: 1.4rem;
-                
+
                 p {
                     font-family: "Fira Code", monospace;
                     font-size: 1.5rem;

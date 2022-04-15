@@ -29,8 +29,8 @@ const props = defineProps<ModalProps>()
     width: 100%;
     height: 100%;
     overflow: hidden;
-    background-color: rgba(0, 0, 0, 0.171);
-    background-color: rgba(0, 0, 0, 0.4);
+    background-color: rgba(0, 0, 0, 0.582);
+    background-color: rgba(0, 0, 0, 0.596);
 }
 
 .modal-content {

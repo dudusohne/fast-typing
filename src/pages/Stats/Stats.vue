@@ -8,16 +8,19 @@
                 <StatsData text="LPM" value="390" />
             </div>
             <div style="flex-direction: row; display: flex;">
-                <StatsData text="LETTERS" value="390/460" />
-                <StatsData text="TIME" value="01:00" />
+                <StatsData text="LETTERS" :value="lettersFinal" />
+                <StatsData text="TIME" :value="time" /> 
             </div>
 
         </div>
-        <i class="fa fa-arrow-circle-left" style="color: #e7de79; font-size: 28px; margin-top: 2rem;" aria-hidden="true" @click="restartAll()"></i>
+        <i class="fa fa-arrow-circle-left" style="color: #e7de79; font-size: 28px; margin-top: 2rem;" aria-hidden="true"
+            @click="restartAll()"></i>
     </div>
 </template>
 
 <script setup lang="ts">
+import { ref } from 'vue';
+import { useRoute } from 'vue-router';
 import StatsData from '../../components/StatsData/StatsData.vue';
 
 interface StatsProps {
@@ -28,6 +31,13 @@ interface StatsProps {
 function restartAll() {
     window.location.href = '/'
 }
+
+const route = useRoute()
+
+const lettersFinal = ref(route.query.letters)
+const letterError = ref(route.query.letterError)
+const letterFind = ref(route.query.letterFind)
+const time = ref(route.query.time)
 </script>
 
 <style lang="scss">
@@ -49,6 +59,26 @@ function restartAll() {
         align-items: center;
         justify-content: center;
         height: fit-content;
+
+        .stats-data {
+            margin-left: 1rem;
+            justify-content: center;
+            align-items: flex-start;
+
+            .text {
+                font-family: "DM Mono", sans-serif;
+                font-weight: 900;
+                font-size: 37px;
+                color: #ffffff;
+            }
+
+            .value {
+                font-family: "Fira Code", monospace;
+                font-size: 32px;
+                color: #e7de79;
+                margin: 0;
+            }
+        }
     }
 }
 </style>
