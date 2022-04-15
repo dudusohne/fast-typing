@@ -3,7 +3,7 @@
 This is a challenge from my work, and it's online [HERE](https://fast-typing-six.vercel.app/).
 
 ## tools used to build it:
-### [Vue 3]https://vuejs.org/guide/introduction.html) + [composition api](https://vuejs.org/guide/introduction.html) + [Typescript](https://www.typescriptlang.org/docs/) + [Vite](https://vitejs.dev/guide/)
+### [Vue 3](https://vuejs.org/guide/introduction.html) + [composition api](https://vuejs.org/guide/introduction.html) + [Typescript](https://www.typescriptlang.org/docs/) + [Vite](https://vitejs.dev/guide/)
 
 
 ## to install deps:
