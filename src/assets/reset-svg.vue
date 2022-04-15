@@ -28,5 +28,10 @@
             stroke: #ffffff;
         }
     }
+
+    &:active {
+        transform: rotate(-180deg);
+        transition: transform 0.5s ease-in-out;
+    }
 }
 </style>

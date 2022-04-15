@@ -13,8 +13,7 @@
             </div>
 
         </div>
-        <i class="fa fa-arrow-circle-left" style="color: #e7de79; font-size: 28px; margin-top: 2rem;" aria-hidden="true"
-            @click="restartAll()"></i>
+        <ResetSvg @click="restartAll()" style="margin-top: 5rem ;" />
     </div>
 </template>
 
@@ -22,6 +21,7 @@
 import { ref } from 'vue';
 import { useRoute } from 'vue-router';
 import StatsData from '../../components/StatsData/StatsData.vue';
+import ResetSvg from '../../assets/reset-svg.vue';
 
 function restartAll() {
     window.location.href = '/'

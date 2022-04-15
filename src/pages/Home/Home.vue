@@ -2,7 +2,7 @@
     <div class="home">
         <!-- header -->
         <div class="header">
-            <span id="time" @click="openModalTimer"></span>
+            <span id="time"></span>
         </div>
 
         <!-- middle text -->
@@ -48,7 +48,7 @@
 </template>
 
 <script setup lang="ts">
-import { onBeforeMount, onMounted, ref } from 'vue'
+import { onMounted, ref, watch } from 'vue'
 import { useRouter } from 'vue-router';
 import MiddleText from '../../components/MiddleText/MiddleText.vue';
 import ModalStart from '../../components/ModalStart/ModalStart.vue';
@@ -57,10 +57,9 @@ import ResetSVG from '../../assets/reset-svg.vue';
 import DeclSvg from '../../assets/decl-svg.vue';
 import ConfSvg from '../../assets/conf-svg.vue';
 
-
 const router = useRouter()
 
-const modalStart = ref<boolean>(false)
+const modalStart = ref<boolean>(true)
 const modalTimer = ref<boolean>(false)
 
 const minutes = ref<number>(0);
@@ -73,23 +72,24 @@ const letters = ref();
 
 const text = 'lorem ipsum dolor sit amet consectetur adipisicing eli error temporibus accusamus saepe amet quos cumque opti eos quibusdam velit dicta maxime vitae repellat repudi andae est et eius perspiciatis quo earum'
 
-onBeforeMount(() => {
-    modalStart.value = true;
+const firstEvent = ref()
 
-    window.addEventListener('keydown', (e: any) => {
+onMounted(() => {
+    firstEvent.value = window.addEventListener('keydown', (e: any) => {
         if (e.key == 'Enter') {
-            modalStart.value = false;
-            modalTimer.value = true;
+            if (!modalTimer.value && modalStart.value) {
+                openModalTimer()
+            }
         }
     });
 })
 
 function openModalTimer() {
-    modalTimer.value = true
+    modalStart.value = false;
+    modalTimer.value = true;
 }
 
 function handleKeyEvent(keypressed: any, textPrint: HTMLBaseElement, keyCount: number) {
-    console.log(keypressed)
     if (keypressed.key.toLowerCase() === text[keyCount]) {
         //@ts-ignore
         document.getElementById('text-upper').style.color = 'white';
