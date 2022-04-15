@@ -29,11 +29,16 @@
                     <input v-model="minutes" maxlength="2" type="number" class="timer-input" />
                     <p>:</p>
                     <input v-model="seconds" maxlength="2" type="number" class="timer-input" style="margin-left: 8px" />
-                    <div style="display: flex;flex-direction: column;">
-                        <button style="color: green" @click="sendInputs(minutes, seconds)">V</button>
-                        <button style="color: red" @click="sendInputs(minutes, seconds)">X</button>
-                        <!-- <ConfSvg @click="sendInputs(minutes, seconds)"  />
-                        <DeclSvg @click="sendInputs(minutes, seconds)" /> -->
+                    <div style="display: flex; flex-direction: column;">
+                        <button style="color: green; background: none; border: none"
+                            @click="sendInputs(minutes, seconds)">
+                            <ConfSvg />
+                        </button>
+                        <button style="color: red; background: none; border: none"
+                            @click="sendInputs(minutes, seconds)">
+                            <DeclSvg />
+                        </button>
+
                     </div>
                 </div>
             </div>
