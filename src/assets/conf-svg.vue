@@ -9,7 +9,7 @@
     </svg>
 </template>
 
-<style scoped lang="scss">
+<style lang="scss">
 .conf {
     &:hover {
         cursor: pointer;

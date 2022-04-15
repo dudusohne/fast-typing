@@ -13,7 +13,7 @@
                     <p class="back-text">{{ text }}</p>
                 </div>
                 <div style="display: flex; justify-content: space-between;">
-                    <ResetSVG @click="restartAll()" style="margin-top: 20rem;"/>
+                    <ResetSVG @click="restartAll()" style="margin-top: 20rem;" />
                 </div>
             </template>
         </MiddleText>
@@ -28,22 +28,18 @@
                 <div class="form-timer">
                     <input v-model="minutes" maxlength="2" type="number" class="timer-input" />
                     <p>:</p>
-                    <input
-                        v-model="seconds"
-                        maxlength="2"
-                        type="number"
-                        class="timer-input"
-                        style="margin-left: 8px"
-                    />
+                    <input v-model="seconds" maxlength="2" type="number" class="timer-input" style="margin-left: 8px" />
                     <div style="display: flex;flex-direction: column;">
-                        <ConfSvg @click="sendInputs(minutes, seconds)" style="margin-left: 14px" />
-                        <DeclSvg @click="sendInputs(minutes, seconds)" style="margin-left: 18px; margin-top: 14px;" />
+                        <button style="color: green" @click="sendInputs(minutes, seconds)">V</button>
+                        <button style="color: red" @click="sendInputs(minutes, seconds)">X</button>
+                        <!-- <ConfSvg @click="sendInputs(minutes, seconds)"  />
+                        <DeclSvg @click="sendInputs(minutes, seconds)" /> -->
                     </div>
                 </div>
             </div>
         </div>
     </div>
-         <Logo />
+    <Logo />
 </template>
 
 <script setup lang="ts">
@@ -85,10 +81,10 @@ onBeforeMount(() => {
 
 function openModalTimer() {
     modalTimer.value = true
-    clearInterval();
 }
 
 function handleKeyEvent(keypressed: any, textPrint: HTMLBaseElement, keyCount: number) {
+    console.log(keypressed)
     if (keypressed.key.toLowerCase() === text[keyCount]) {
         //@ts-ignore
         document.getElementById('text-upper').style.color = 'white';
@@ -107,7 +103,6 @@ function handleKeyEvent(keypressed: any, textPrint: HTMLBaseElement, keyCount: n
 }
 
 function sendInputs(minutes: number, seconds: number) {
-    console.log(minutes, seconds)
     let duration = 0;
 
     if (minutes > 0) {
