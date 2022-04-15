@@ -10,6 +10,7 @@
 
 <script setup lang="ts">
 import { defineProps } from 'vue'
+import Logo from '../Logo/Logo.vue';
 
 interface ModalProps {
     isOpen: boolean;

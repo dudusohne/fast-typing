@@ -36,22 +36,26 @@
                         style="margin-left: 8px"
                     />
                     <div style="display: flex;flex-direction: column;">
-                        <button style="color: green" @click="sendInputs(minutes, seconds)">V</button>
-                        <button style="color: red" @click="sendInputs(minutes, seconds)">X</button>
+                        <ConfSvg @click="sendInputs(minutes, seconds)" style="margin-left: 14px" />
+                        <DeclSvg @click="sendInputs(minutes, seconds)" style="margin-left: 18px; margin-top: 14px;" />
                     </div>
                 </div>
             </div>
         </div>
     </div>
+         <Logo />
 </template>
 
 <script setup lang="ts">
 import { onBeforeMount, onMounted, ref } from 'vue'
-
+import { useRouter } from 'vue-router';
 import MiddleText from '../../components/MiddleText/MiddleText.vue';
 import ModalStart from '../../components/ModalStart/ModalStart.vue';
+import Logo from '../../components/Logo/Logo.vue';
 import ResetSVG from '../../assets/reset-svg.vue';
-import { useRouter } from 'vue-router';
+import DeclSvg from '../../assets/decl-svg.vue';
+import ConfSvg from '../../assets/conf-svg.vue';
+
 
 const router = useRouter()
 
@@ -248,6 +252,9 @@ function restartAll() {
             .form-timer {
                 display: flex;
                 flex-direction: row;
+                align-items: center;
+                justify-content: center;
+                align-content: center;
                 margin-top: 1.4rem;
 
                 p {
@@ -258,17 +265,7 @@ function restartAll() {
                     margin-left: 0.5rem;
                 }
 
-                button {
-                    background: none;
-                    border: none;
-                    font-size: 24px;
-                    font-weight: bold;
-                    margin-left: 1rem;
 
-                    &:hover {
-                        font-size: 26px;
-                    }
-                }
 
                 .timer-input {
                     height: 4rem;

@@ -1,5 +1,5 @@
 <template>
-    <svg width="22" height="21" viewBox="0 0 22 21" fill="none" xmlns="http://www.w3.org/2000/svg" @click="$emit('click')">
+    <svg width="22" height="21" viewBox="0 0 22 21" fill="none" xmlns="http://www.w3.org/2000/svg" @click="$emit('click')" class="reset-svg">
         <path
             d="M1 2V8H7"
             stroke="#E7DE79"
@@ -16,3 +16,17 @@
         />
     </svg>
 </template>
+
+<style scoped lang="scss">
+.reset-svg {
+    &:hover {
+        cursor: pointer;
+        transform: rotate(-70deg);
+        transition: transform 0.5s ease-in-out;
+        
+        path {
+            stroke: #ffffff;
+        }
+    }
+}
+</style>
