@@ -1,4 +1,19 @@
-# Vue 3 + composition api + Typescript + Vite
+# fastTYPING ~ 
+
+This is a challenge from my work, and it's online [HERE](https://fast-typing-six.vercel.app/).
+
+## tools used to build it:
+### Vue 3 + composition api + Typescript + Vite
+
+## to install deps:
+```bash
+yarn
+```
+
+## to run local:
+```bash
+yarn
+```
 
 This template should help get you started developing with Vue 3 and Typescript in Vite. The template uses Vue 3 `<script setup>` SFCs, check out the [script setup docs](https://v3.vuejs.org/api/sfc-script-setup.html#sfc-script-setup) to learn more.
 
