@@ -73,6 +73,7 @@ const letters = ref();
 const text = 'lorem ipsum dolor sit amet consectetur adipisicing eli error temporibus accusamus saepe amet quos cumque opti eos quibusdam velit dicta maxime vitae repellat repudi andae est et eius perspiciatis quo earum'
 
 const firstEvent = ref()
+const secEvent = ref()
 
 onMounted(() => {
     firstEvent.value = window.addEventListener('keydown', (e: any) => {
@@ -107,7 +108,8 @@ function handleKeyEvent(keypressed: any, textPrint: HTMLBaseElement, keyCount: n
     }
 }
 
-function sendInputs(minutes: number, seconds: number) {
+function sendInputs(minutes: any, seconds: any) {
+    console.log(minutes, seconds)
     let duration = 0;
 
     if (minutes > 0) {
@@ -124,6 +126,12 @@ function sendInputs(minutes: number, seconds: number) {
         keyCount++
         //@ts-ignore
         handleKeyEvent(key, textPrint, keyCount);
+    });
+
+    secEvent.value = window.addEventListener('keydown', (e: any) => {
+        if (e.key == 'Backspace') {
+            restartAll()
+        }
     });
 
     let display = document.querySelector('#time');
