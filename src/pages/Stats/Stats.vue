@@ -3,13 +3,13 @@
         <span>Time's Up!</span>
         <div class="container">
             <div style="flex-direction: row; display: flex;">
-                <StatsData text="CON" value="70%" />
-                <StatsData text="ACC" value="90%" />
-                <StatsData text="LPM" value="390" />
+                <StatsData text="CON" :value="CON" />
+                <StatsData text="ACC" :value="ACC" />
+                <StatsData text="ERR" :value="ERR" />
             </div>
             <div style="flex-direction: row; display: flex;">
                 <StatsData text="LETTERS" :value="lettersFinal" />
-                <StatsData text="TIME" :value="time" /> 
+                <StatsData text="TIME" :value="time" />
             </div>
 
         </div>
@@ -30,9 +30,10 @@ function restartAll() {
 const route = useRoute()
 
 const lettersFinal = ref(route.query.letters)
-const letterError = ref(route.query.letterError)
-const letterFind = ref(route.query.letterFind)
 const time = ref(route.query.time)
+const ACC = ref(route.query.acc)
+const ERR = ref(route.query.err)
+const CON = ref(route.query.con)
 </script>
 
 <style lang="scss">

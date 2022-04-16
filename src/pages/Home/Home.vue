@@ -38,7 +38,6 @@
                             @click="sendInputs(minutes, seconds)">
                             <DeclSvg />
                         </button>
-
                     </div>
                 </div>
             </div>
@@ -48,7 +47,7 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, ref, watch } from 'vue'
+import { onMounted, ref } from 'vue'
 import { useRouter } from 'vue-router';
 import MiddleText from '../../components/MiddleText/MiddleText.vue';
 import ModalStart from '../../components/ModalStart/ModalStart.vue';
@@ -67,6 +66,7 @@ const seconds = ref<number>(60);
 
 const wrongLetters = ref<number>(0);
 const correctLetters = ref<number>(0);
+const lettersTyped = ref<number>(0);
 const totalLetters = ref<number>(0);
 const letters = ref();
 
@@ -91,6 +91,7 @@ function openModalTimer() {
 }
 
 function handleKeyEvent(keypressed: any, textPrint: HTMLBaseElement, keyCount: number) {
+    lettersTyped.value++;
     if (keypressed.key.toLowerCase() === text[keyCount]) {
         //@ts-ignore
         document.getElementById('text-upper').style.color = 'white';
@@ -164,14 +165,22 @@ function startTimer(duration: number, display: any) {
 function sendStats() {
     totalLetters.value = text.length;
     letters.value = `${correctLetters.value}/${totalLetters.value}`;
+
+    //letterCorrect * 100 / totalLetters = % acerto ACC
+    const ACC = (correctLetters.value * 100) / totalLetters.value;
+    //letterError * 100 / totalLetters = % erro ERR
+    const ERR = (100 * wrongLetters.value) / totalLetters.value;
+    //lettersTyped * 100 / totalLetters = % consistency CON
+    const CON = (100 * lettersTyped.value) / totalLetters.value;
+
     router.push({
         path: '/stats',
         query: {
             letters: letters.value,
-            correct: correctLetters.value,
-            wrong: wrongLetters.value,
-            total: totalLetters.value,
-            time: `${minutes.value}:${seconds.value}`
+            time: `${minutes.value}:${seconds.value}`,
+            acc: ACC,
+            err: ERR,
+            con: CON
         }
     })
 
@@ -181,7 +190,6 @@ function restartAll() {
     window.location.reload();
 }
 </script>
-
 
 <style scoped lang="scss">
 .home {
