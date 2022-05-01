@@ -18,6 +18,17 @@
             </template>
         </MiddleText>
 
+        <div class="dashboard">
+            <div class="left-stats">
+                <span v-show="wrongLetters > 0">WRONG:</span>
+                <p id="wrong"></p>
+            </div>
+            <div class="right-stats">
+                <span v-show="correctLetters > 0">CORRECT:</span>
+                <p id="right"></p>
+            </div>
+        </div>
+
         <ModalStart :is-open="modalStart" />
 
         <!-- modal-timer -->
@@ -92,16 +103,31 @@ function openModalTimer() {
 
 function handleKeyEvent(keypressed: any, textPrint: HTMLBaseElement, keyCount: number) {
     lettersTyped.value++;
+
+    let wrongPrint = document.querySelector('#wrong')
+    let rightPrint = document.querySelector('#right')
+
+
     if (keypressed.key.toLowerCase() === text[keyCount]) {
         //@ts-ignore
         document.getElementById('text-upper').style.color = 'white';
         textPrint.textContent = textPrint.textContent + text[keyCount];
         correctLetters.value++;
+
+        //@ts-ignore
+        rightPrint.textContent = correctLetters.value;
+
+
     } else {
         //@ts-ignore
         document.getElementById('text-upper').style.color = 'red';
         textPrint.textContent = textPrint.textContent + text[keyCount];
         wrongLetters.value++;
+
+        //@ts-ignore
+        wrongPrint.textContent = wrongLetters.value;
+
+        console.log(text[keyCount])
     }
 
     if (keyCount >= text.length) {
@@ -110,7 +136,6 @@ function handleKeyEvent(keypressed: any, textPrint: HTMLBaseElement, keyCount: n
 }
 
 function sendInputs(minutes: any, seconds: any) {
-    console.log(minutes, seconds)
     let duration = 0;
 
     if (minutes > 0) {
@@ -198,6 +223,65 @@ function restartAll() {
     align-items: center;
     overflow-wrap: break-word;
     height: 80vh;
+
+    .dashboard {
+        display: flex;
+        width: 70%;
+        justify-content: space-between;
+        flex-direction: row;
+
+        .right-stats {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+
+            width: 7rem;
+            height: 4.5rem;
+
+            span {
+                font-size: 0.7rem;
+                font-weight: bold;
+                color: rgb(47, 167, 36);
+            }
+
+            p {
+                text-align: center;
+                margin: 0;
+
+                font-size: 1.5rem;
+                font-weight: bold;
+                font-family: "Fira Code", monospace;
+
+                color: rgb(47, 167, 36);
+            }
+        }
+
+        .left-stats {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+
+            width: 7rem;
+            height: 4.5rem;
+
+            span {
+                font-size: 0.7rem;
+                font-weight: bold;
+                color: rgb(155, 30, 30);
+            }
+
+            p {
+                text-align: center;
+                margin: 0;
+
+                font-size: 1.5rem;
+                font-weight: bold;
+                font-family: "Fira Code", monospace;
+
+                color: rgb(155, 30, 30);
+            }
+        }
+    }
 
     .middle-text {
         display: flex;

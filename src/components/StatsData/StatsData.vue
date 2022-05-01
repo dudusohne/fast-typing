@@ -1,7 +1,7 @@
 <template>
     <div class="stats-data">
         <span class="text">{{ props.text }}</span>
-        <p class="value">{{ props.value }}</p>
+        <p class="value">{{ Math.ceil(props.value) }}%</p>
     </div>
 </template>
 
