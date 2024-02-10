@@ -8,8 +8,8 @@
                 <StatsData text="ERR" :value="ERR" />
             </div>
             <div style="flex-direction: row; display: flex;">
-                <StatsData text="LETTERS" :value="lettersFinal" />
-                <StatsData text="TIME" :value="time" />
+                <StatsDash text="LETTERS" :value="lettersFinal" />
+                <StatsDash text="TIME" :value="time" />
             </div>
 
         </div>
@@ -22,6 +22,7 @@ import { ref } from 'vue';
 import { useRoute } from 'vue-router';
 import StatsData from '../../components/StatsData/StatsData.vue';
 import ResetSvg from '../../assets/reset-svg.vue';
+import StatsDash from '../../components/StatsDash/StatsDash.vue'
 
 function restartAll() {
     window.location.href = '/'

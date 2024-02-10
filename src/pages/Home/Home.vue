@@ -126,8 +126,6 @@ function handleKeyEvent(keypressed: any, textPrint: HTMLBaseElement, keyCount: n
 
         //@ts-ignore
         wrongPrint.textContent = wrongLetters.value;
-
-        console.log(text[keyCount])
     }
 
     if (keyCount >= text.length) {
