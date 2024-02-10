@@ -10,7 +10,7 @@ import { LocationQueryValue } from 'vue-router';
 
 interface Props {
     text: string
-    value?: LocationQueryValue | LocationQueryValue[]
+    value: LocationQueryValue | LocationQueryValue[]
 }
 const props = defineProps<Props>()
 </script>
